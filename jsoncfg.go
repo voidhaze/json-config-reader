@@ -1,4 +1,4 @@
-package main
+package jsoncfg
 
 import (
 	"encoding/json"
@@ -9,16 +9,18 @@ import (
 	"github.com/ieee0824/go-deepmerge"
 )
 
-var master_data, local_data interface{}
+type Jsonconfig struct {
+	Masterdata interface{}
+}
 
-func main() {
-
-	load_files("fixtures/config.json", "fixtures/config.local.json")
-	Get("database.host")
+type Configforge interface {
+	Get(string)
+	Loadfile(string)
+	Loadfiles(...string)
 }
 
 // Given a list of file names, read them in order and parse the files into a master data store
-func load_files(files ...string) {
+func (cfg *Jsonconfig) Loadfiles(files ...string) {
 
 	for _, file := range files {
 		file_raw, err := ioutil.ReadFile(file)
@@ -31,7 +33,7 @@ func load_files(files ...string) {
 		fmt.Println("Reading : " + file)
 		fmt.Println(string(file_raw))
 
-		load_file(file_raw)
+		cfg.Loadfile(file_raw)
 
 	}
 }
@@ -40,39 +42,49 @@ func load_files(files ...string) {
 // decodes the JSON into a internal data struture and merges the new data structure
 // with the existing master data structure
 
-func load_file(file_data []byte) {
-	err := json.Unmarshal(file_data, &local_data)
+func (cfg *Jsonconfig) Loadfile(file_data []byte) {
+	var localdata interface{}
+	err := json.Unmarshal(file_data, &localdata)
 	if err != nil {
 		fmt.Println("Error decoding json:", err)
 		return
 
 	}
 
-	if master_data != nil {
-		merged_data, err := deepmerge.Merge(master_data, local_data)
+	if cfg.Masterdata != nil {
+
+		// merge the data sets so that the data in localdata always overrides masterdata
+		merged_data, err := deepmerge.Merge(localdata, cfg.Masterdata)
 		if err != nil {
 			fmt.Println("Error merging data:", err)
 			return
 		}
-		master_data = merged_data
+
+		cfg.Masterdata = merged_data
 	} else {
-		master_data = local_data
+
+		cfg.Masterdata = localdata
 	}
 
-	fmt.Println(master_data)
+	fmt.Println(cfg.Masterdata)
 }
 
 // Reads a value from the master data structure, given a dot seperated key string
 // For example "database.host"
 // Supports Arrays and etc...
-func Get(get_str string) {
-	fragments := strings.Split(get_str, ".")
-	datum := master_data
+func (cfg *Jsonconfig) Get(searchstr string) interface{} {
+
+	fragments := strings.Split(searchstr, ".")
+
+	datum := cfg.Masterdata
+
 	for _, fragment := range fragments {
 		datum = datum.(map[string]interface{})[fragment]
 		//check the datum to see if it's a X object or nil
 		// throw errors etc...
 		fmt.Println(datum)
 	}
+
+	return datum
 
 }
