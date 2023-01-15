@@ -5,4 +5,11 @@ A simple config reader which is capable of loading multiple JSON files, merging 
 
 # Example
 
+```
+    import "github.com/voidhaze/jsoncfg"
 
+	config := new(Jsonconfig)
+	config.Loadfiles("config.json", "config.local.json")
+
+	host := config.Get("database.host")
+```
