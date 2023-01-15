@@ -9,6 +9,8 @@ import (
 	"github.com/ieee0824/go-deepmerge"
 )
 
+//FIXME make it a struct and tweak the functions to be added to the struct
+
 var master_data, local_data interface{}
 
 
