@@ -72,7 +72,7 @@ func (cfg *Jsonconfig) Loadfile(file_data []byte) {
 
 // Reads a value from the master data structure, given a dot seperated key string
 // For example "database.host" attempts to fetch the value stored in the master data
-// structure. Supports Arrays and etc...
+// structure.
 func (cfg *Jsonconfig) Get(searchstr string) interface{} {
 
 	fragments := strings.Split(searchstr, ".")
