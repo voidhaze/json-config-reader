@@ -11,5 +11,5 @@ A simple config reader which is capable of loading multiple JSON files, merging 
     config := new(Jsonconfig)
     config.Loadfiles("config.json", "config.local.json")
 
-	host := config.Get("database.host")
+    host := config.Get("database.host")
 ```
