@@ -1,4 +1,4 @@
-module github.com/voidhaze/json-config-reader
+module github.com/voidhaze/jsoncfg
 
 go 1.19
 
