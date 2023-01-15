@@ -10,6 +10,7 @@ import (
 )
 
 //FIXME make it a struct and tweak the functions to be added to the struct
+//FIXME may be expose a interface to be it nice and extendable
 
 var master_data, local_data interface{}
 
