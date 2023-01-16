@@ -14,7 +14,8 @@ type Jsonconfig struct {
 	Masterdata interface{}
 }
 
-// Interface was created but not used, was intended to make the class able to handle alternative configs sources and data fetching methods
+// Interface was created but not used, was intended to make the class able to handle alternative configs sources and data fetching methods.
+// This needs abit more work to be functional, but roughly illustrates the intended function. 
 type Configforge interface {
 	Get(string)
 	Loadfile(string)
